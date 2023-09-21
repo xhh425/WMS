@@ -57,6 +57,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <!--        Swagger          -->
+        <!--   测试页面：http://localhost:8080/swagger-ui/index.html    -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
