@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository // 表示持久层
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    @Select("select * from user_file where u_name = #{uname}")
-    User searchByUname(String uname);
+    // 用于注册账号时, 查找该账号是否存在
+    @Select("select * from user_file where u_account = #{uaccount}")
+    User searchByUAccount(String uaccount);
 }

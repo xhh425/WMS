@@ -28,8 +28,8 @@ public class User {
     private String phone;
     private Integer isDelete;
 
-    public User(String upwd, String uname) {
-        this.uPwd = upwd;
-        this.uName = uname;
+    public User(String uAccount, String uPwd) {
+        this.uAccount = uAccount;
+        this.uPwd = uPwd;
     }
 }

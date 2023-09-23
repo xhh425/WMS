@@ -8,7 +8,7 @@ create table User_File
     u_account   varchar(20),                                               #人员账号
     u_pwd       varchar(20),                                               #账号密码
     u_name      varchar(20),                                               #人员名
-    sex         varchar(2) check (sex = '男' or sex = '女'),               #性别
+    sex         varchar(1) check (sex = '男' or sex = '女'),               #性别
     birthdate   date,                                                      #出生日期
     id_number   VARCHAR(25) check (id_number REGEXP '^[0-9]{17}[0-9Xx]$'), #身份证号
     nationality VARCHAR(150),                                              #籍贯

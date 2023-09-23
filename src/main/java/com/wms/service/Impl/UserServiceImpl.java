@@ -15,13 +15,13 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public String loginService(String uname, String upwd) {
-        if ("".equals(uname)) {
-            return "请输入用户名";
+    public String loginService(String uaccount, String upwd) {
+        if ("".equals(uaccount)) {
+            return "请输入账号";
         } else if ("".equals(upwd)) {
             return "请输入密码";
         }
-        User user = userMapper.searchByUname(uname);
+        User user = userMapper.searchByUAccount(uaccount);
         System.out.println(user);
         if (user != null) {
             if (upwd.equals(user.getUPwd())) {
@@ -31,19 +31,24 @@ public class UserServiceImpl implements UserService {
                 return "密码错误";
             }
         }
-        return "此用户不存在";
+        return "该账号不存在";
     }
 
     @Override
     public String registerService(User user) {
-        if ("".equals(user.getUName())) {
-            return "请输入用户名";
-        } else if ("".equals(user.getUName())) {
+        System.out.println(user);
+        if ("".equals(user.getUAccount())) {
+            return "请输入账号";
+        } else if ("".equals(user.getUAccount())) {
             return "请输入密码";
         }
-        User userE = userMapper.searchByUname(user.getUName());
+        User userE = userMapper.searchByUAccount(user.getUAccount());
         if (userE == null) {
-            userMapper.insert(user);
+            try {
+                userMapper.insert(user);
+            } catch (Exception e) {
+                return "请检查输入格式";
+            }
             return "SUCCESS";
         }
         return "用户已存在";
