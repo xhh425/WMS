@@ -48,4 +48,39 @@ public class UserController {
             return ResultUtil.error(msg);
         }
     }
+
+    @GetMapping("/user/updateUserBaseInfo")
+    @ResponseBody
+    public Result<?> updateUserBaseInfo(Integer uid, String upwd, String uname, String sex, Date birthdate,
+                                        String idNumber, String nationality, String address, String phone) {
+        // 1.判断权限
+        if (false) {
+            return ResultUtil.error("无权限, 仅限本人账号及管理员操作");
+        }
+        // 2.进行修改操作
+        User user = new User(uid, null, upwd, uname, sex, birthdate, idNumber, nationality, address, phone, null);
+        System.out.println("controller: " + user);
+        String msg = userServiceImpl.updateUserBaseInfo(uid, user);
+        if (("SUCCESS").equals(msg)) {
+            return ResultUtil.success("修改用户信息成功");
+        } else {
+            return ResultUtil.error(msg);
+        }
+    }
+
+    @GetMapping("/user/updateUpwd")
+    @ResponseBody
+    public Result<?> updateUpwd(Integer uid, String originUpwd, String updatedUpwd) {
+        // 1.判断权限
+        if (false) {
+            return ResultUtil.error("无权限, 仅限本人账号及管理员操作");
+        }
+        // 2.进行修改操作
+        String msg = userServiceImpl.updateUpwd(uid, originUpwd, updatedUpwd);
+        if (("SUCCESS").equals(msg)) {
+            return ResultUtil.success("修改用户密码成功");
+        } else {
+            return ResultUtil.error(msg);
+        }
+    }
 }

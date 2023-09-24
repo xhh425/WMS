@@ -1,5 +1,6 @@
 package com.wms.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.sql.Date;
 @ToString
 @TableName("user_file")
 public class User {
+    @TableId("u_id")
     private Integer uId;
     private String uAccount;
     private String uPwd;
@@ -28,8 +30,4 @@ public class User {
     private String phone;
     private Integer isDelete;
 
-    public User(String uAccount, String uPwd) {
-        this.uAccount = uAccount;
-        this.uPwd = uPwd;
-    }
 }

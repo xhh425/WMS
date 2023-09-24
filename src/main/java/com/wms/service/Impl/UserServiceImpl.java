@@ -1,7 +1,9 @@
 package com.wms.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wms.entity.User;
+import com.wms.exception.ResultUtil;
 import com.wms.mapper.UserMapper;
 import com.wms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String registerService(User user) {
-        System.out.println(user);
+//        System.out.println(user);
         if ("".equals(user.getUAccount())) {
             return "请输入账号";
         } else if ("".equals(user.getUAccount())) {
@@ -57,5 +59,46 @@ public class UserServiceImpl implements UserService {
     @Override
     public String queryUserDataById(Integer id) {
         return "已找到id=" + id.toString() + "的用户";
+    }
+
+    @Override
+    public String updateUserBaseInfo(Integer uid, User user) {
+        User selectedUser = userMapper.selectById(uid);
+        System.out.println("页面输入框数据: " + user);
+        if (selectedUser != null) {
+            userMapper.updateById(user);
+            System.out.println("原信息:" + selectedUser + "\n修改后信息:" + userMapper.selectById(uid));
+            return "SUCCESS";
+        }
+        return "更新用户信息失败";
+    }
+
+    @Override
+    public String updateUpwd(Integer uid, String originUpwd, String updatedUpwd) {
+        User user = userMapper.selectById(uid);
+        String upwd = user.getUPwd();
+//        System.out.println("页面输入框密码: " + originUpwd);
+//        System.out.println("原密码: " + upwd);
+        // 判断原密码是否正确
+        if (!originUpwd.equals(user.getUPwd())) {
+            return "原密码错误, 请重新输入";
+        }
+        if (user != null) {
+
+            // 修改操作
+            UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("u_id", uid).set("u_pwd", updatedUpwd);
+            Integer row = userMapper.update(user, updateWrapper);
+//            System.out.println("!!!!" + row);
+
+            System.out.println("原密码:" + upwd + "\n修改后密码:" + userMapper.selectById(uid).getUPwd());
+            return "SUCCESS";
+        }
+        return "修改用户账号密码失败";
+    }
+
+    @Override
+    public String deleteUserInfo(Integer uid) {
+        return "删除用户信息失败";
     }
 }
