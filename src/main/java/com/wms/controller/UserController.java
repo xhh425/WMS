@@ -6,6 +6,8 @@ import com.wms.exception.ResultUtil;
 import com.wms.service.Impl.UserServiceImpl;
 import com.wms.service.UserService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +22,35 @@ public class UserController {
     @Resource
     private UserService userService;
 
+
     @RequestMapping("/user/{id}")
     @ResponseBody
-    public String queryUserDataById(@PathVariable("id") Integer id) {
-        return userService.queryUserDataById(id);
+    public User Index(@PathVariable("id") Integer id, HttpServletRequest request) {
+        System.out.println("进入主页");
+        HttpSession session = request.getSession();
+        User user = userService.queryUserDataById(id);
+        // 通过Session判断是否为登录用户进入
+        if (session.getAttribute("username") == null) {
+            System.out.println("请登录");
+            return null;
+        } else if (user.getUPwd().equals(session.getAttribute("userpassword"))) {
+            System.out.println("session: " + session.getAttribute("username"));
+            System.out.println("当前访问账号: " + user.getUAccount());
+            return userService.queryUserDataById(id);
+        }
+        return null;
     }
 
     @GetMapping("/user/login")
     @ResponseBody
-    public Result<?> login(@RequestParam String uaccount, @RequestParam String upwd) {
+    public Result<?> login(HttpServletRequest request, @RequestParam String uaccount, @RequestParam String upwd) {
         String msg = userServiceImpl.loginService(uaccount, upwd);
         if (("SUCCESS").equals(msg)) {
+            // 用session记录用户登陆状态
+            HttpSession session = request.getSession();
+            session.setAttribute("username", uaccount);
+            session.setAttribute("userpassword", DigestUtils.md5DigestAsHex(upwd.getBytes()));
+            System.out.println(session.getAttribute("username").toString() + session.getAttribute("userpassword").toString());
             return ResultUtil.success("登录成功");
         } else {
             return ResultUtil.error(msg);

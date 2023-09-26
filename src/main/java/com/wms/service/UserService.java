@@ -28,7 +28,7 @@ public interface UserService {
      * @param uid
      * @return
      */
-    String queryUserDataById(Integer uid);
+    User queryUserDataById(Integer uid);
 
     /**
      * 通过uid修改用户基本信息

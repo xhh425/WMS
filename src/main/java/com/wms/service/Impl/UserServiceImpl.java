@@ -58,8 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String queryUserDataById(Integer id) {
-        return "已找到id=" + id.toString() + "的用户";
+    public User queryUserDataById(Integer id) {
+        User user = userMapper.selectById(id);
+        return user;
     }
 
     @Override
