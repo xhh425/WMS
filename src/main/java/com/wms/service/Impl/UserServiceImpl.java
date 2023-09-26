@@ -2,7 +2,9 @@ package com.wms.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wms.entity.Power;
 import com.wms.entity.User;
+import com.wms.entity.UserPower;
 import com.wms.exception.ResultUtil;
 import com.wms.mapper.UserMapper;
 import com.wms.service.UserService;
@@ -15,6 +17,7 @@ import org.springframework.util.DigestUtils;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+
 
     @Override
     public String loginService(String uaccount, String upwd) {
@@ -103,4 +106,5 @@ public class UserServiceImpl implements UserService {
     public String deleteUserInfo(Integer uid) {
         return "删除用户信息失败";
     }
+
 }

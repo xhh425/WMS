@@ -19,16 +19,13 @@ public class UserController {
     @Resource
     UserServiceImpl userServiceImpl;
 
-    @Resource
-    private UserService userService;
 
-
-    @RequestMapping("/user/{id}")
+    @GetMapping("/user/{id}")
     @ResponseBody
     public User Index(@PathVariable("id") Integer id, HttpServletRequest request) {
         System.out.println("进入主页");
         HttpSession session = request.getSession();
-        User user = userService.queryUserDataById(id);
+        User user = userServiceImpl.queryUserDataById(id);
         // 通过Session判断是否为登录用户进入
         if (session.getAttribute("username") == null) {
             System.out.println("请登录");
@@ -36,7 +33,7 @@ public class UserController {
         } else if (user.getUPwd().equals(session.getAttribute("userpassword"))) {
             System.out.println("session: " + session.getAttribute("username"));
             System.out.println("当前访问账号: " + user.getUAccount());
-            return userService.queryUserDataById(id);
+            return userServiceImpl.queryUserDataById(id);
         }
         return null;
     }
