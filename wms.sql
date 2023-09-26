@@ -16,12 +16,19 @@ create table User_File
     phone       VARCHAR(15),                                               #电话号
     is_delete   int                                                        #是否被删除
 );
-# # 用户权限表
-# create table User_Power(
-#                           up_id int PRIMARY KEY auto_increment,	#权限id
-#                                 u_id int,
-#                           power VARCHAR(100)
-# );
+# 用户权限对应表
+create table User_Power
+(
+    up_id int PRIMARY KEY auto_increment, #权限id
+    u_id  int,
+    p_id  int
+);
+
+# 权限表
+create table Power(
+    p_id int primary key auto_increment,
+    p_describe varchar(100)
+);
 
 # 物料表
 create table Material_File

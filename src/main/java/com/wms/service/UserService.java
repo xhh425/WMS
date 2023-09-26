@@ -1,6 +1,8 @@
 package com.wms.service;
 
+import com.wms.entity.Power;
 import com.wms.entity.User;
+import com.wms.entity.UserPower;
 
 // 该文件夹用于放置接口
 // 该文件为示例文件
@@ -54,4 +56,6 @@ public interface UserService {
      * @return
      */
     String deleteUserInfo(Integer uid);
+
+
 }
