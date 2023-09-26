@@ -8,9 +8,9 @@ import com.wms.mapper.UserMapper;
 import com.wms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 // 该文件夹用于放置实现类
-// 该文件为示例文件
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.searchByUAccount(uaccount);
         System.out.println(user);
         if (user != null) {
-            if (upwd.equals(user.getUPwd())) {
+            if (user.getUPwd().equals(DigestUtils.md5DigestAsHex(upwd.getBytes()))) {
                 return "SUCCESS";
             } else {
                 System.out.println(user.getUPwd());
@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
             try {
                 userMapper.insert(user);
             } catch (Exception e) {
+                System.out.println(e);
                 return "请检查输入格式";
             }
             return "SUCCESS";

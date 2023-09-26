@@ -7,6 +7,7 @@ import com.wms.service.Impl.UserServiceImpl;
 import com.wms.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.Data;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -40,9 +41,12 @@ public class UserController {
     @ResponseBody
     public Result<?> Register(@RequestParam String uaccount, @RequestParam String upwd, @RequestParam String uname, @RequestParam String sex, @RequestParam Date birthdate,
                               @RequestParam String idNumber, @RequestParam String nationality, @RequestParam String address, @RequestParam String phone) {
-        User user = new User(null, uaccount, upwd, uname, sex, birthdate, idNumber, nationality, address, phone, 0);
+        //使用spring提供的DigestUtils工具类生成32位MD5字符串
+        String md5upwd = DigestUtils.md5DigestAsHex(upwd.getBytes());
+        User user = new User(null, uaccount, md5upwd, uname, sex, birthdate, idNumber, nationality, address, phone, 0);
         String msg = userServiceImpl.registerService(user);
         if (("SUCCESS").equals(msg)) {
+            System.out.println(user.getUPwd());
             return ResultUtil.success("注册成功");
         } else {
             return ResultUtil.error(msg);

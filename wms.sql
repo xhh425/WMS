@@ -6,7 +6,7 @@ create table User_File
 (
     u_id        int PRIMARY key auto_increment,                            #人员id
     u_account   varchar(20),                                               #人员账号
-    u_pwd       varchar(20),                                               #账号密码
+    u_pwd       varchar(32),                                               #账号密码, 采用md5加密方式存储, 长度至少需要32
     u_name      varchar(20),                                               #人员名
     sex         varchar(1) check (sex = '男' or sex = '女'),               #性别
     birthdate   date,                                                      #出生日期
