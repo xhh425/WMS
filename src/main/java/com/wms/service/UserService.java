@@ -57,5 +57,5 @@ public interface UserService {
      */
     String deleteUserInfo(Integer uid);
 
-
+    User queryUserDataByAccount(String Account );
 }

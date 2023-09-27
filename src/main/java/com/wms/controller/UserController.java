@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wms.entity.User;
 import com.wms.exception.Result;
 import com.wms.exception.ResultUtil;
@@ -27,11 +28,11 @@ public class UserController {
         HttpSession session = request.getSession();
         User user = userServiceImpl.queryUserDataById(id);
         // 通过Session判断是否为登录用户进入
-        if (session.getAttribute("username") == null) {
+        if (session.getAttribute("uaccount") == null) {
             System.out.println("请登录");
             return null;
-        } else if (user.getUPwd().equals(session.getAttribute("userpassword"))) {
-            System.out.println("session: " + session.getAttribute("username"));
+        } else if (user.getUPwd().equals(session.getAttribute("upwd"))) {
+            System.out.println("session: " + session.getAttribute("uaccount"));
             System.out.println("当前访问账号: " + user.getUAccount());
             return userServiceImpl.queryUserDataById(id);
         }
@@ -40,14 +41,17 @@ public class UserController {
 
     @GetMapping("/user/login")
     @ResponseBody
-    public Result<?> login(HttpServletRequest request, @RequestParam String uaccount, @RequestParam String upwd) {
+    public Result<?> login(HttpServletRequest request, String uaccount, String upwd) {
         String msg = userServiceImpl.loginService(uaccount, upwd);
         if (("SUCCESS").equals(msg)) {
+
+            User user = userServiceImpl.queryUserDataByAccount(uaccount);
+
             // 用session记录用户登陆状态
             HttpSession session = request.getSession();
-            session.setAttribute("username", uaccount);
-            session.setAttribute("userpassword", DigestUtils.md5DigestAsHex(upwd.getBytes()));
-            System.out.println(session.getAttribute("username").toString() + session.getAttribute("userpassword").toString());
+            session.setAttribute("user", user);
+            System.out.println("当前登录用户信息: " + session.getAttribute("birthdate"));
+
             return ResultUtil.success("登录成功");
         } else {
             return ResultUtil.error(msg);

@@ -2,6 +2,8 @@ package com.wms.service;
 
 import com.wms.entity.Power;
 
+import java.util.List;
+
 public interface PowerService {
 
     String addPower(Power power);
@@ -10,5 +12,5 @@ public interface PowerService {
 
     String updatePower(Power power);
 
-    String findAllPower(Power power);
+    String findAllPower(List<Power> powerList);
 }

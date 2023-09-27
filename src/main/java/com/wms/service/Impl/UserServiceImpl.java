@@ -67,6 +67,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User queryUserDataByAccount(String Account) {
+        User user = userMapper.searchByUAccount(Account);
+        return user;
+    }
+
+
+    @Override
     public String updateUserBaseInfo(Integer uid, User user) {
         User selectedUser = userMapper.selectById(uid);
         System.out.println("页面输入框数据: " + user);
