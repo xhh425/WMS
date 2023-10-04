@@ -4,6 +4,8 @@ import com.wms.entity.Power;
 import com.wms.entity.User;
 import com.wms.entity.UserPower;
 
+import java.util.List;
+
 // 该文件夹用于放置接口
 // 该文件为示例文件
 public interface UserService {
@@ -57,5 +59,11 @@ public interface UserService {
      */
     String deleteUserInfo(Integer uid);
 
-    User queryUserDataByAccount(String Account );
+    User queryUserDataByAccount(String Account);
+
+    List<User> findActiveUserInfo();
+
+    List<User> findInactiveUserInfo();
+
+    List<User> findAllUserInfo();
 }

@@ -19,24 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/power")
 public class PowerController {
     @Resource
     PowerServiceImpl powerServiceImpl;
     @Resource
     UserPowerServiceImpl userPowerServiceImpl;
 
-    @GetMapping("/power/addPower")
+    @GetMapping("/addPower")
     @ResponseBody
     public Result<?> addPower(Power power, HttpServletRequest request) {
 
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResultUtil.error("用户未登录");
+        }
+        Integer uid = user.getUId();
 
         // 判断权限
-//        if ()
+        if (!userPowerServiceImpl.userHasPowerToManage( userPowerServiceImpl.findUserAllrPower(uid), "power_manage")) {
 
-            String msg = powerServiceImpl.addPower(power);
+            return ResultUtil.error("权限不足");
+        }
+
+        String msg = powerServiceImpl.addPower(power);
         if (("SUCCESS").equals(msg)) {
             return ResultUtil.success("添加权限成功");
         } else {
@@ -44,12 +52,26 @@ public class PowerController {
         }
     }
 
-    @GetMapping("/power/deletePower")
+    @GetMapping("/deletePower")
     @ResponseBody
-    public Result<?> deletePower(Power power) {
-        System.out.println(power);
-        System.out.println(power.getPid());
-        System.out.println(power.getPDescribe());
+    public Result<?> deletePower(Power power, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResultUtil.error("用户未登录");
+        }
+        Integer uid = user.getUId();
+
+        // 判断权限
+        if (!userPowerServiceImpl.userHasPowerToManage( userPowerServiceImpl.findUserAllrPower(uid), "power_manage")) {
+
+            return ResultUtil.error("权限不足");
+        }
+
+//        System.out.println(power);
+//        System.out.println(power.getPid());
+//        System.out.println(power.getPDescribe());
         String msg = powerServiceImpl.deletePower(power);
         if (("SUCCESS").equals(msg)) {
             return ResultUtil.success("删除权限成功");
@@ -58,12 +80,26 @@ public class PowerController {
         }
     }
 
-    @GetMapping("/power/updatePower")
+    @GetMapping("/updatePower")
     @ResponseBody
-    public Result<?> updatePower(Power power) {
-        System.out.println(power);
-        System.out.println(power.getPid());
-        System.out.println(power.getPDescribe());
+    public Result<?> updatePower(Power power, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResultUtil.error("用户未登录");
+        }
+        Integer uid = user.getUId();
+
+        // 判断权限
+        if (!userPowerServiceImpl.userHasPowerToManage( userPowerServiceImpl.findUserAllrPower(uid), "power_manage")) {
+
+            return ResultUtil.error("权限不足");
+        }
+
+//        System.out.println(power);
+//        System.out.println(power.getPid());
+//        System.out.println(power.getPDescribe());
         String msg = powerServiceImpl.updatePower(power);
         if (("SUCCESS").equals(msg)) {
             return ResultUtil.success("修改权限成功");
@@ -72,14 +108,14 @@ public class PowerController {
         }
     }
 
-    @GetMapping("/power/findAllPower")
+    @GetMapping("/findAllPower")
     @ResponseBody
-    public Result<?> findAllPower() {
-        String msg = powerServiceImpl.findAllPower(null);
-        if (("SUCCESS").equals(msg)) {
-            return ResultUtil.success("查询权限成功");
-        } else {
-            return ResultUtil.error(msg);
-        }
+    public List<Power> findAllPower() {
+        return powerServiceImpl.findAllPower();
+//        if (("SUCCESS").equals(msg)) {
+//            return ResultUtil.success("查询权限成功");
+//        } else {
+//            return ResultUtil.error(msg);
+//        }
     }
 }

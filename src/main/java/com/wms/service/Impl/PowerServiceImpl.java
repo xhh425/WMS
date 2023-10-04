@@ -46,12 +46,12 @@ public class PowerServiceImpl implements PowerService {
     }
 
     @Override
-    public String findAllPower(List<Power> powerList) {
-        powerList = powerMapper.selectList(null);
-        if (powerList != null) {
-            System.out.println(powerList);
-            return "SUCCESS";
-        }
-        return "ERROR";
+    public List<Power> findAllPower() {
+        return powerMapper.selectList(null);
+//        if (powerList != null) {
+//            System.out.println(powerList);
+//            return "SUCCESS";
+//        }
+//        return "ERROR";
     }
 }

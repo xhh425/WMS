@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
+
 // 该文件夹用于放置实现类
 @Service
 public class UserServiceImpl implements UserService {
@@ -75,7 +77,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updateUserBaseInfo(Integer uid, User user) {
+        // 判断账号是否存在
         User selectedUser = userMapper.selectById(uid);
+        if (selectedUser == null) {
+            return "账号不存在";
+        }
         System.out.println("页面输入框数据: " + user);
         if (selectedUser != null) {
             userMapper.updateById(user);
@@ -88,11 +94,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateUpwd(Integer uid, String originUpwd, String updatedUpwd) {
         User user = userMapper.selectById(uid);
+        if (user == null) {
+            return "账号不存在";
+        }
         String upwd = user.getUPwd();
 //        System.out.println("页面输入框密码: " + originUpwd);
 //        System.out.println("原密码: " + upwd);
         // 判断原密码是否正确
-        if (!originUpwd.equals(user.getUPwd())) {
+        if (!user.getUPwd().equals(DigestUtils.md5DigestAsHex(originUpwd.getBytes()))) {
             return "原密码错误, 请重新输入";
         }
         if (user != null) {
@@ -111,7 +120,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUserInfo(Integer uid) {
-        return "删除用户信息失败";
+        User user = userMapper.selectById(uid);
+        if (user == null) {
+            return "账号不存在";
+        }
+        if (userMapper.deleteUserInfoByUid(uid) > 0) {
+            return "SUCCESS";
+        }
+        return "注销账号失败";
     }
 
+    @Override
+    public List<User> findActiveUserInfo() {
+        return userMapper.findActiveUserInfo();
+    }
+
+    @Override
+    public List<User> findInactiveUserInfo() {
+        return userMapper.findInactiveUserInfo();
+    }
+
+    @Override
+    public List<User> findAllUserInfo() {
+        return userMapper.findAllUserInfo();
+    }
 }

@@ -1,15 +1,20 @@
 package com.wms.service;
 
+import com.wms.dto.UserPowerDTO;
 import com.wms.entity.UserPower;
+
+import java.util.List;
 
 public interface UserPowerService {
 
-    String addUserPower(UserPower userPower);
+    String addUserPower(Integer uid, Integer pid);
 
-    String deleteUserPower(UserPower userPower);
+    String deleteUserPower(Integer uid, Integer pid);
 
-    String updateUserPower(UserPower userPower);
+    String updateUserPower(Integer uid, Integer oldPid, Integer newPid);
 
-    String displayUserPower(UserPower userPower);
+    List<UserPowerDTO> findUserAllrPower(Integer uid);
+
+    boolean userHasPowerToManage(List<UserPowerDTO> userPowerList, String pDescribe);
 
 }

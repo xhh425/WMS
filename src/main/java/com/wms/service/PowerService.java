@@ -12,5 +12,5 @@ public interface PowerService {
 
     String updatePower(Power power);
 
-    String findAllPower(List<Power> powerList);
+    List<Power> findAllPower();
 }
